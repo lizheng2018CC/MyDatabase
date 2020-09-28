@@ -51,7 +51,7 @@ public class TelnetServer {
 	                executor.execute(CP);
 	                //保存客户端连接
 	                CM.AddSock(s);
-	                CM.AddClitProcess(CP);
+	               // CM.AddClitProcess(CP);
 	                
 	            }
 

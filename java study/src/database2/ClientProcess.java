@@ -12,11 +12,11 @@ public class ClientProcess implements Runnable {
 	private Socket socket;
 	private String tempString; 
 	public BufferedReader reader;
-	public PrintWriter writer;
+	//public PrintWriter writer;
 	
 	public ClientProcess(Socket socket) throws IOException {
 		reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		writer = new PrintWriter(socket.getOutputStream(), true);
+//		writer = new PrintWriter(socket.getOutputStream(), true);
 		this.socket = socket;
 	}
 
@@ -24,14 +24,15 @@ public class ClientProcess implements Runnable {
 		try {
 			//为每一个socket建立读写通道
 			
-			writer.println("********** Welcome to HnuDB **********");
-			writer.println();
-			writer.flush();
-
+			/*
+			 * writer.println("********** Welcome to HnuDB **********"); writer.println();
+			 * writer.flush();
+			 */
+			ClientManage.NoteMeLogin();
 			while(true) {
 				tempString = reader.readLine();  //如果客户端断开链接，则返回null
 				if(tempString == null) {//ClientProcess.isServerClose(socket) 只能发送17次
-					socket.close();
+					//socket.close();
 					break;
 				}
 				if(tempString.equals("logout")) break;
@@ -40,19 +41,18 @@ public class ClientProcess implements Runnable {
 				//writer.flush();
 				
 			}
-			System.out.println("bye!");
+			bye();
 			
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		} finally {
-			try {
-				socket.close();
-			} catch (IOException e) {
-				
-			}
+			;
 		}
 	}
-	
+	public void bye() throws IOException {
+		ClientManage.NoteMeBye(socket);
+		socket.close();
+	}
 	
 	public static Boolean isServerClose(Socket socket){ 
 		   try{ 
